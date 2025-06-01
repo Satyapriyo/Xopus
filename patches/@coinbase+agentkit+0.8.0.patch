@@ -1,0 +1,28 @@
+diff --git a/node_modules/@coinbase/agentkit/dist/wallet-providers/privyEvmWalletProvider.js b/node_modules/@coinbase/agentkit/dist/wallet-providers/privyEvmWalletProvider.js
+index 5eada71..3b917bc 100644
+--- a/node_modules/@coinbase/agentkit/dist/wallet-providers/privyEvmWalletProvider.js
++++ b/node_modules/@coinbase/agentkit/dist/wallet-providers/privyEvmWalletProvider.js
+@@ -13,8 +13,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
+ var _PrivyEvmWalletProvider_walletId, _PrivyEvmWalletProvider_authorizationPrivateKey;
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.PrivyEvmWalletProvider = void 0;
+-const server_auth_1 = require("@privy-io/server-auth");
+-const viem_1 = require("@privy-io/server-auth/viem");
++// const server_auth_1 = require("@privy-io/server-auth");
++// const viem_1 = require("@privy-io/server-auth/viem");
+ const viemWalletProvider_1 = require("./viemWalletProvider");
+ const viem_2 = require("viem");
+ const network_1 = require("../network/network");
+diff --git a/node_modules/@coinbase/agentkit/dist/wallet-providers/privyShared.js b/node_modules/@coinbase/agentkit/dist/wallet-providers/privyShared.js
+index f248c3e..eea9848 100644
+--- a/node_modules/@coinbase/agentkit/dist/wallet-providers/privyShared.js
++++ b/node_modules/@coinbase/agentkit/dist/wallet-providers/privyShared.js
+@@ -2,7 +2,7 @@
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.createPrivyClient = void 0;
+ exports.createPrivyWallet = createPrivyWallet;
+-const server_auth_1 = require("@privy-io/server-auth");
++// const server_auth_1 = require("@privy-io/server-auth");
+ /**
+  * Create a Privy client
+  *
