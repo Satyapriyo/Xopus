@@ -1,57 +1,51 @@
+// app/api/agent/route.ts
 import { AgentRequest, AgentResponse } from "@/app/types/api";
 import { NextResponse } from "next/server";
 import { createAgent } from "./create-agent";
-import { Message, generateId, generateText } from "ai";
-
+import { Message, generateId } from "ai";
+import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 
 const messages: Message[] = [];
 
-/**
- * Handles incoming POST requests to interact with the AgentKit-powered AI agent.
- * This function processes user messages and streams responses from the agent.
- *
- * @function POST
- * @param {Request & { json: () => Promise<AgentRequest> }} req - The incoming request object containing the user message.
- * @returns {Promise<NextResponse<AgentResponse>>} JSON response containing the AI-generated reply or an error message.
- *
- * @description Sends a single message to the agent and returns the agents' final response.
- *
- * @example
- * const response = await fetch("/api/agent", {
- *     method: "POST",
- *     headers: { "Content-Type": "application/json" },
- *     body: JSON.stringify({ userMessage: input }),
- * });
- */
 export async function POST(
-  req: Request & { json: () => Promise<AgentRequest> },
+  req: Request & { json: () => Promise<AgentRequest> }
 ): Promise<NextResponse<AgentResponse>> {
   try {
-    // 1️. Extract user message from the request body
     const { userMessage } = await req.json();
 
-    // 2. Get the agent
-    const agent = await createAgent();
+    const { model, system } = await createAgent();
 
-    // 3.Start streaming the agent's response
+    // Push user message
     messages.push({ id: generateId(), role: "user", content: userMessage });
-    const { text } = await generateText({
-      ...agent,
-      messages,
+
+    // Build the full prompt message list
+    const chatMessages: ChatCompletionMessageParam[] = [
+      { role: "system", content: system },
+      ...messages.map(({ role, content }) => ({
+        role: role as "system" | "user" | "assistant",
+        content,
+      })),
+    ];
+
+    // Call OpenRouter (DeepSeek)
+    const completion = await model.chat.completions.create({
+      model: "deepseek/deepseek-chat:free",
+      messages: chatMessages,
     });
 
-    // 4. Add the agent's response to the messages
+    const text = completion.choices[0].message.content ?? "";
+
+    // Save assistant response
     messages.push({ id: generateId(), role: "assistant", content: text });
 
-    // 5️. Return the final response
     return NextResponse.json({ response: text });
   } catch (error) {
-    console.error("Error processing request:", error);
+    console.error("Error in /api/agent:", error);
     return NextResponse.json({
       error:
         error instanceof Error
           ? error.message
-          : "I'm sorry, I encountered an issue processing your message. Please try again later.",
+          : "Unexpected error occurred. Please try again.",
     });
   }
 }
