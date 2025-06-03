@@ -1,5 +1,7 @@
 
-## 🧠 AI Crypto Sidekick
+
+
+# 🧠 AI Crypto Sidekick
 
 > Real-time insights. Pay-per-query. Built onchain.
 
@@ -91,7 +93,7 @@ You get paid every time your API is queried.
 
 ### 📄 License
 
-MIT © [Your Name](https://yourwebsite.com)
+MIT © [Satyapriyo](https://yourwebsite.com)
 
 ---
 
@@ -100,12 +102,4 @@ MIT © [Your Name](https://yourwebsite.com)
 * Built with ❤️ using [AgentKit](https://agentkit.xyz), [x402](https://x402.app), [CDP Wallet](https://cdpwallet.com)
 * Design inspired by Web3-native interfaces
 
----
 
-Would you like me to:
-
-* Upload this to your GitHub repo?
-* Add badges (Vercel deploy, License, etc.)?
-* Include a demo video/GIF?
-
-Let me know and I’ll add them right away.
