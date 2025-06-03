@@ -1,67 +1,111 @@
-# Onchain Agent Powered by AgentKit
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with `create-onchain-agent`.  
+## 🧠 AI Crypto Sidekick
 
-It integrates [AgentKit](https://github.com/coinbase/agentkit) to provide AI-driven interactions with on-chain capabilities.
+> Real-time insights. Pay-per-query. Built onchain.
 
-## Getting Started
+AI Crypto Sidekick is a decentralized AI agent platform that delivers real-time crypto insights via pay-per-query monetization. Powered by **x402**, **CDP Wallet**, and **AgentKit**, it empowers developers to earn revenue from every API call.
 
-First, install dependencies:
+![Hero Banner](https://your-banner-image-url.com) <!-- optional: Add a screenshot or demo gif -->
 
-```sh
+---
+
+### 🚀 Features
+
+* ⚡ **Real-time Crypto Insights** – Live token prices, analytics, and predictions
+* 🔐 **Pay-Per-Query API** – Monetized fetch using `x402-fetch` + `CDP Wallet`
+* 🤖 **AI Agent Interface** – Ask questions, get intelligent responses
+* 🧾 **Transparent Onchain Accounting** – Revenue split between devs, providers, and treasury
+* 🌙 **Dark Mode Friendly** – Fully responsive and theme-aware UI
+
+---
+
+### 🧰 Tech Stack
+
+| Layer       | Tech                                     |
+| ----------- | ---------------------------------------- |
+| Frontend    | Next.js 15 + TailwindCSS + Shadcn/ui     |
+| Agent Infra | [AgentKit](https://agentkit.xyz)         |
+| Payments    | [x402pay](https://x402.app) + CDP Wallet |
+| Blockchain  | Ethereum (or other EVM chains)           |
+| Deployment  | Vercel / Netlify (recommended)           |
+
+---
+
+### 📦 Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/yourusername/ai-crypto-sidekick.git
+cd ai-crypto-sidekick
+
+# Install dependencies
 npm install
-```
 
-Then, configure your environment variables:
-
-```sh
-mv .env.local .env
-```
-
-Run the development server:
-
-```sh
+# Run the dev server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the project.
+---
 
+### 🔌 Environment Variables
 
-## Configuring Your Agent
+Create a `.env.local` file and configure:
 
-You can [modify your configuration](https://github.com/coinbase/agentkit/tree/main/typescript/agentkit#usage) of the agent. By default, your agentkit configuration occurs in the `/api/agent/prepare-agentkit.ts` file, and agent instantiation occurs in the `/api/agent/create-agent.ts` file.
-
-### 1. Select Your LLM  
-Modify the OpenAI model instantiation to use the model of your choice.
-
-### 2. Select Your Wallet Provider  
-AgentKit requires a **Wallet Provider** to interact with blockchain networks.
-
-### 3. Select Your Action Providers  
-Action Providers define what your agent can do. You can use built-in providers or create your own.
+```env
+NEXT_PUBLIC_X402_PROJECT_ID=your-x402pay-project-id
+NEXT_PUBLIC_AGENT_API_URL=https://your-agent-api.com
+NEXT_PUBLIC_CHAIN_ID=1 # Ethereum Mainnet (or testnet)
+```
 
 ---
 
-## Next Steps
+### 💰 How Pay-Per-Query Works
 
-- Explore the AgentKit README: [AgentKit Documentation](https://github.com/coinbase/agentkit)
-- Learn more about available Wallet Providers & Action Providers.
-- Experiment with custom Action Providers for your specific use case.
+1. User submits a question via the UI.
+2. The app wraps a fetch call with `x402-fetch`, which triggers CDP Wallet for payment.
+3. Payment is split:
 
----
+   * 70% to developer
+   * 20% to data provider
+   * 10% to community treasury
 
-## Learn More
-
-- [Learn more about CDP](https://docs.cdp.coinbase.com/)
-- [Learn more about AgentKit](https://docs.cdp.coinbase.com/agentkit/docs/welcome)
-- [Learn more about Next.js](https://nextjs.org/docs)
-- [Learn more about Tailwind CSS](https://tailwindcss.com/docs)
+You get paid every time your API is queried.
 
 ---
 
-## Contributing
+### 🧪 Example Queries
 
-Interested in contributing to AgentKit? Follow the contribution guide:
+* `"What's the current ETH gas fee?"`
+* `"List top gainers on Pump.fun"`
+* `"Should I buy SOL now?"`
 
-- [Contribution Guide](https://github.com/coinbase/agentkit/blob/main/CONTRIBUTING.md)
-- Join the discussion on [Discord](https://discord.gg/CDP)
+---
+
+### 📸 Screenshots
+
+| Light Mode                                  | Dark Mode                                 |
+| ------------------------------------------- | ----------------------------------------- |
+| ![light](https://your-light-mode-image.png) | ![dark](https://your-dark-mode-image.png) |
+
+---
+
+### 📄 License
+
+MIT © [Your Name](https://yourwebsite.com)
+
+---
+
+### ✨ Credits
+
+* Built with ❤️ using [AgentKit](https://agentkit.xyz), [x402](https://x402.app), [CDP Wallet](https://cdpwallet.com)
+* Design inspired by Web3-native interfaces
+
+---
+
+Would you like me to:
+
+* Upload this to your GitHub repo?
+* Add badges (Vercel deploy, License, etc.)?
+* Include a demo video/GIF?
+
+Let me know and I’ll add them right away.
