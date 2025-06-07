@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Brain, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
+import { WalletConnect } from "./connectWallet";
 
 // Smooth scroll helper
 const smoothScrollTo = (id: string) => {
@@ -62,9 +63,7 @@ export function Header() {
 
                     <div className="flex items-center space-x-4">
                         <ThemeToggle />
-                        <Button variant="outline" className="hidden md:flex">
-                            Connect Wallet
-                        </Button>
+                        <WalletConnect />
                         <Button className="md:hidden" variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                             {isMenuOpen ? <X /> : <Menu />}
                         </Button>
@@ -91,9 +90,10 @@ export function Header() {
                             <button onClick={() => handleNavClick("faq")} className="text-left text-foreground/80 hover:text-primary transition-colors">
                                 FAQ
                             </button>
-                            <Button variant="outline" className="w-full">
+                            {/* <Button variant="outline" className="w-full">
                                 Connect Wallet
-                            </Button>
+                            </Button> */}
+                            <WalletConnect />
                         </div>
                     </motion.nav>
                 )}

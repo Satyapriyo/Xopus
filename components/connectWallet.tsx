@@ -1,16 +1,50 @@
-import * as React from "react";
-import { useConnect } from "wagmi";
+import {
+  ConnectWallet,
+  Wallet,
+  WalletDropdown,
+  WalletDropdownBasename,
+  WalletDropdownFundLink,
+  WalletDropdownLink,
+  WalletDropdownDisconnect,
+} from '@coinbase/onchainkit/wallet';
+import {
+  Address,
+  Avatar,
+  Name,
+  Identity,
+  EthBalance,
+} from '@coinbase/onchainkit/identity';
 
-export function WalletConnect() {
-    const { connectors, connect } = useConnect();
-    return connectors.map((connector) => (
-        <button
-            type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            key={connector.uid}
-            onClick={() => connect({ connector })}
+// omitted for brevity
+
+export const WalletConnect = () => {
+  return (
+    <Wallet>
+      <ConnectWallet>
+        <Avatar className="h-6 w-6" />
+        <Name />
+      </ConnectWallet>
+      <WalletDropdown>
+        <Identity
+          className="px-4 pt-3 pb-2"
+          hasCopyAddressOnClick
         >
-            {connector.id == "coinbaseWalletSDK" ? "Coinbase Smart Wallet" : connector.name}
-        </button>
-    ));
+          <Avatar />
+          <Name />
+          <Address />
+          <EthBalance />
+        </Identity>
+        <WalletDropdownBasename />
+        <WalletDropdownLink
+          icon="wallet"
+          href="https://keys.coinbase.com"
+        >
+          Wallet
+        </WalletDropdownLink>
+        <WalletDropdownFundLink />
+        <WalletDropdownDisconnect />
+      </WalletDropdown>
+    </Wallet>
+  )
+
 }

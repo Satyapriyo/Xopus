@@ -1,19 +1,17 @@
 "use client";
-
+import '@coinbase/onchainkit/styles.css';
 import "./globals.css"
 import { useEffect } from "react";
-import dynamic from "next/dynamic";
+
 import { Header } from "@/components/Header";
-import { config } from "@/lib/wallet";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider } from "wagmi";
+
 import { ThemeProvider } from "@/components/ThemeProvider";
-const queryClient = new QueryClient();
+// import { X402Provider } from '@/components/X402Provider';
 
-const WalletProviders = dynamic(() => import("@/components/walletProvider"), {
-  ssr: false,
-});
 
+import {
+  Providers
+} from "@/components/walletProvider";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
@@ -24,15 +22,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html>
       <body>
-        <WalletProviders>
-          <WagmiProvider config={config}>
-            <QueryClientProvider client={queryClient}>
-              <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-                <Header />{children}
-              </ThemeProvider>
-            </QueryClientProvider>
-          </WagmiProvider>
-        </WalletProviders>
+        <Providers>
+
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <Header />{children}
+
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -7,15 +7,23 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 import { motion, AnimatePresence } from "framer-motion";
+import { Avatar, Name } from '@coinbase/onchainkit/identity';
+import {
+  Transaction,
+  TransactionButton,
+  TransactionSponsor,
+  TransactionStatus,
+  TransactionStatusAction,
+  TransactionStatusLabel,
+  TransactionToastLabel,
+  TransactionToast
+} from '@coinbase/onchainkit/transaction';
+import type { LifecycleStatus } from '@coinbase/onchainkit/transaction';
+import { Wallet, ConnectWallet } from '@coinbase/onchainkit/wallet';
+import { useAccount } from 'wagmi';
+import { calls } from '@/calls';
 
-// import { ChatMessage } from "../types/api";
 
-// interface Message {
-//   text: string;
-//   sender: 'user' | 'assistant';
-//   timestamp: Date;
-//   id: string;
-// }
 
 export default function Home() {
   const [input, setInput] = useState("");
@@ -23,6 +31,11 @@ export default function Home() {
   const { messages, sendMessage, isThinking } = useAgent();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [hasSentAfterPayment, setHasSentAfterPayment] = useState(false);
+  const [txResetKey, setTxResetKey] = useState(0);
+
+  const { address } = useAccount();
+
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -119,13 +132,16 @@ export default function Home() {
     ),
   }), []);
 
+
+
+
   const handleSend = useCallback(async () => {
     if (!input.trim() || isThinking) return;
-    
+
     const message = input.trim();
     setInput("");
     setError(null);
-    
+
     try {
       await sendMessage(message);
     } catch (err) {
@@ -134,19 +150,44 @@ export default function Home() {
     }
   }, [input, isThinking, sendMessage]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-    if (e.key === "Escape") {
-      setInput("");
-    }
-  }, [handleSend]);
+  // const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (e.key === "Enter" && !e.shiftKey) {
+  //     e.preventDefault();
+  //     handleSend();
+  //   }
+  //   if (e.key === "Escape") {
+  //     setInput("");
+  //   }
+  // }, [handleSend]);
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
+
+
+  const handleOnStatus = useCallback((status: LifecycleStatus) => {
+    console.log('LifecycleStatus', status);
+
+    if (status.statusName === 'error') {
+      console.error('Transaction error:', status.statusData);
+    }
+
+    if (status.statusName === 'init' || status.statusName === 'transactionIdle') {
+      // reset trigger
+      setHasSentAfterPayment(false);
+    }
+
+    if (status.statusName === 'success' && !hasSentAfterPayment) {
+      console.log('Transaction successful:', status.statusData);
+      setHasSentAfterPayment(true); // ensure it runs only once
+      handleSend();
+      // Reset Coinbase payment button after a short delay (e.g., 2s)
+      setTimeout(() => {
+        setTxResetKey(prev => prev + 1);
+      }, 2000);
+    }
+  }, [handleSend, hasSentAfterPayment]);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4">
@@ -216,7 +257,7 @@ export default function Home() {
             messages.map((msg, i) => {
               const isUser = msg.sender === "user";
               const timestamp = msg.timestamp || new Date();
-              
+
               return (
                 <motion.div
                   key={msg.id || i}
@@ -289,10 +330,10 @@ export default function Home() {
               <textarea
                 ref={inputRef as any}
                 className="w-full bg-muted text-foreground placeholder-muted-foreground px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring transition resize-none min-h-[44px] max-h-32"
-                placeholder="Type your message... (Enter to send, Shift+Enter for new line)"
+                placeholder="Type your message... (Enter for new line)"
                 value={input}
                 onChange={e => setInput(e.target.value)}
-                onKeyDown={handleKeyDown as any}
+                // onKeyDown={handleKeyDown as any}
                 disabled={isThinking}
                 rows={1}
                 style={{
@@ -306,31 +347,39 @@ export default function Home() {
                 }}
               />
             </div>
-            <button
-              onClick={handleSend}
-              disabled={isThinking || !input.trim()}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center space-x-2 ${
-                isThinking || !input.trim()
-                  ? "bg-muted text-muted-foreground cursor-not-allowed"
-                  : "bg-primary text-primary-foreground hover:brightness-110 shadow-sm hover:shadow-md"
-              }`}
-            >
-              <span>Send</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
-            </button>
+            <div className="max-w-md">
+              {address ? (
+                <Transaction
+                  key={txResetKey}
+                  calls={calls}
+                  onStatus={handleOnStatus}
+                  isSponsored={true}
+                >
+                  <TransactionButton />
+                  <TransactionSponsor />
+                  <TransactionStatus>
+                    <TransactionStatusLabel />
+                    <TransactionStatusAction />
+                  </TransactionStatus>
+                  <TransactionToast >
+                    <TransactionToastLabel />
+                  </TransactionToast>
+                </Transaction>
+              ) : (
+                <Wallet>
+                  <ConnectWallet>
+                    <Avatar className='h-6 w-6' />
+                    <Name />
+                  </ConnectWallet>
+                </Wallet>
+              )}
+            </div>
           </div>
-          <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
-            <span>
-              {input.length > 0 && `${input.length} characters`}
-            </span>
-            <span>
-              Press Escape to clear
-            </span>
-          </div>
+
         </div>
       </div>
+
+
     </div>
   );
 }
