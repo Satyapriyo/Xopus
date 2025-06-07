@@ -42,7 +42,7 @@ export function Header() {
                         whileHover={{ scale: 1.05 }}
                     >
                         <Brain className="h-8 w-8 text-primary" />
-                        <span className="text-xl font-bold">CryptoAgent</span>
+                        <span className="text-xl font-bold">Xopus</span>
                     </motion.div>
 
                     {/* Desktop Navigation */}
@@ -63,7 +63,7 @@ export function Header() {
 
                     <div className="flex items-center space-x-4">
                         <ThemeToggle />
-                        <WalletConnect />
+                        <WalletConnect  />
                         <Button className="md:hidden" variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                             {isMenuOpen ? <X /> : <Menu />}
                         </Button>

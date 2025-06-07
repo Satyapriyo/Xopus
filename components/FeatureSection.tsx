@@ -53,7 +53,7 @@ export function FeaturesSection() {
                     viewport={{ once: true }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+                    <h2 className="text-4xl lg:text-8xl mt-10 font-bold mb-4">
                         Powerful <span className="text-gradient">Features</span>
                     </h2>
                     <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

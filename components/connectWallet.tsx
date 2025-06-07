@@ -19,8 +19,8 @@ import {
 
 export const WalletConnect = () => {
   return (
-    <Wallet>
-      <ConnectWallet>
+    <Wallet className='text-white'>
+      <ConnectWallet className='px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white rounded-xl font-medium dark:text-white transition-all duration-200 shadow-lg hover:shadow-xl border border-slate-500/30 flex items-center space-x-2'>
         <Avatar className="h-6 w-6" />
         <Name />
       </ConnectWallet>

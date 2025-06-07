@@ -8,20 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const queryTypes = [
-    {
-        type: "General Questions",
-        price: "$0.05",
-        description: "Basic crypto questions, definitions, explanations",
-        features: [
-            "General crypto knowledge",
-            "Market education",
-            "Technology explanations",
-            "Basic price queries"
-        ]
-    },
+
     {
         type: "Real-time Data",
-        price: "$0.15",
+        price: "$0.0007",
         description: "Live prices, market data, trending analysis",
         features: [
             "Real-time price data",
@@ -31,17 +21,7 @@ const queryTypes = [
         ],
         popular: true
     },
-    {
-        type: "Advanced Insights",
-        price: "$0.25",
-        description: "DeFi strategies, yield farming, complex analysis",
-        features: [
-            "DeFi yield opportunities",
-            "Risk analysis",
-            "Portfolio suggestions",
-            "Meme coin picks"
-        ]
-    }
+
 ];
 
 export function PricingSection() {
@@ -77,7 +57,7 @@ export function PricingSection() {
                     </div>
                 </motion.div>
 
-                <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div className="max-w-6xl mx-auto">
                     {queryTypes.map((query, index) => (
                         <motion.div
                             key={index}
@@ -86,8 +66,9 @@ export function PricingSection() {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
+                            className="mx-auto  max-w-sm"
                         >
-                            <Card className={`relative h-full bg-card/50 backdrop-blur transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 ${query.popular ? 'border-primary/40 ring-2 ring-primary/20' : 'border-primary/20 hover:border-primary/40'
+                            <Card className={`relative h-full bg-card/50 backdrop-blur  transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 ${query.popular ? 'border-primary/40 ring-2 ring-primary/20' : 'border-primary/20 hover:border-primary/40'
                                 }`}>
                                 {query.popular && (
                                     <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-white">
@@ -98,7 +79,9 @@ export function PricingSection() {
                                 <CardHeader className="text-center pb-4">
                                     <CardTitle className="text-2xl mb-2">{query.type}</CardTitle>
                                     <div className="mb-4">
-                                        <span className="text-4xl font-bold text-primary">{query.price}</span>
+                                        <span className="text-4xl font-bold text-primary">
+                                            {query.price && !isNaN(Number(query.price)) ? Number(query.price).toFixed(3) : "0.001"}$
+                                        </span>
                                         <span className="text-muted-foreground ml-1">per query</span>
                                     </div>
                                     <p className="text-muted-foreground text-sm">{query.description}</p>
